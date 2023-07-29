@@ -31,7 +31,6 @@ import { RouterModule } from '@angular/router';
           </h5>
           <p
             class="card-text"
-            style="max-height: 150px; overflow: hidden; text-overflow: ellipsis;"
           >
             {{ community.description }}
           </p>
