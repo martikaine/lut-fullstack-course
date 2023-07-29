@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import { userRoutes } from "./routes/users";
 import { expressjwt } from "express-jwt";
 import { communityRoutes } from "./routes/communities";
+import { postRoutes } from "./routes/posts";
 
 mongoose.connect(database);
 
@@ -24,7 +25,11 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+  })
+);
 app.use(bodyParser.json());
 
 app.use(
@@ -41,10 +46,9 @@ app.use((err: any, req: any, res: any, next: any) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, "/public")));
-
 app.use("/users", userRoutes);
 app.use("/communities", communityRoutes);
+app.use("/posts", postRoutes);
 
 app.get("/", (_, res) => res.send("Hello world!"));
 

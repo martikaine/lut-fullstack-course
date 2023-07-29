@@ -17,14 +17,13 @@ export const userRoutes = Router();
 
 userRoutes.post("/register", async (req, res) => {
   try {
-    User.addUser({
+    await User.addUser({
       name: req.body.name,
       email: req.body.email,
-      username: req.body.username,
       password: req.body.password,
     });
 
-    res.send("Created");
+    res.status(201).json({ name: req.body.name, email: req.body.email });
   } catch (e) {
     res
       .status(400)
@@ -36,35 +35,28 @@ userRoutes.post("/auth", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const user = await User.findOne({ name: username });
-
-  if (!user) {
-    res.sendStatus(404);
+  const user = await User.findOne({ username: username });
+  if (!user || !(await user.isPasswordCorrect(password))) {
+    res.status(400).send("Incorrect username or password");
     return;
   }
 
-  const isMatch = await user.isPasswordCorrect(password);
-  if (isMatch) {
-    const userObj = {
-      id: user._id,
-      name: user.name,
-      username: user.username,
-      email: user.email,
-    };
-    const token = jwt.sign(userObj, secret, { expiresIn: 86400 });
+  const userObj = {
+    id: user._id,
+    username: user.username,
+    email: user.email,
+  };
+  const token = jwt.sign(userObj, secret, { expiresIn: 86400 });
 
-    res.json({
-      token,
-      user: userObj,
-    });
-  } else {
-    res.status(400).send("Incorrect password");
-  }
+  res.json({
+    token,
+    user: userObj,
+  });
 });
 
-userRoutes.get("/users/:username", async (req: Request<AuthUser>, res) => {
-  const name = req.params.username;
-  const user = await User.findOne({ name });
+userRoutes.get("/:username", async (req: Request<AuthUser>, res) => {
+  const username = req.params.username;
+  const user = await User.findOne({ username });
 
   if (!user) {
     res.sendStatus(404);
@@ -72,9 +64,9 @@ userRoutes.get("/users/:username", async (req: Request<AuthUser>, res) => {
   }
 
   // Show personal info if this is our own profile
-  if (user.name === req.auth?.username) {
+  if (user.username === req.auth?.username) {
     res.send(user);
   } else {
-    res.send({ name: user.name });
+    res.send({ name: user.username });
   }
 });
