@@ -1,79 +1,54 @@
 import { Router } from "express";
 import { Community } from "../models/community";
 import { Post } from "../models/post";
-import { Request } from "express-jwt";
+import { Request, expressjwt } from "express-jwt";
 import { AuthUser } from "./users";
 import { getErrorMessage } from "../utils";
+import { secret } from "../config/database";
 
 const postsPerPage = 10;
 
 export const communityRoutes = Router();
 
-communityRoutes.get("/", async (_, res) => {
-  res.send(await Community.find());
-});
-
-communityRoutes.get("/:name", async (req, res) => {
-  res.send(await Community.findOne({ name: req.params.name }));
-});
-
-communityRoutes.post("/", async (req, res) => {
-  const community = await Community.create({
-    name: req.body.name,
-    description: req.body.description,
-  });
-
-  res.status(201).json(community);
-});
-
-communityRoutes.delete("/:name", async (req: Request<AuthUser>, res) => {
-  if (req.auth?.isAdmin) {
-    Community.deleteOne({ name: req.params.name });
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(401);
-  }
-});
-
-// Get posts in a community
 communityRoutes.get(
-  "/:communityName/posts",
+  "/",
+  expressjwt({ secret: secret, algorithms: ["HS256"] }),
+  async (_, res) => {
+    res.send(await Community.find());
+  }
+);
+
+communityRoutes.get(
+  "/:name",
+  expressjwt({ secret: secret, algorithms: ["HS256"] }),
+  async (req, res) => {
+    res.send(await Community.findOne({ name: req.params.name }));
+  }
+);
+
+communityRoutes.post(
+  "/",
+  expressjwt({ secret: secret, algorithms: ["HS256"] }),
   async (req: Request<AuthUser>, res) => {
-    const page = Number(req.query.page) || 1;
+    const community = await Community.create({
+      name: req.body.name,
+      description: req.body.description,
+      creator: req.auth!.id,
+    });
 
-    try {
-      const community = await Community.findOne({
-        name: req.params.communityName,
-      });
+    res.status(201).json(community);
+  }
+);
 
-      if (!community) {
-        return res.status(404).json({ message: "Community not found" });
-      }
-
-      const totalPosts = await Post.countDocuments({
-        community: community._id,
-      });
-      const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-      const posts = await Post.find({ community: community._id })
-        .populate("author", "username")
-        .skip((page - 1) * postsPerPage)
-        .limit(postsPerPage)
-        .lean();
-
-      console.log(posts);
-      const postsWithVoteStatus = posts.map((post) => {
-        const voteStatus = post.voteIds[req.auth!.id] || "none";
-        return { ...post, voteStatus };
-      });
-
-      res.json({
-        totalPages: totalPages,
-        currentPage: page,
-        posts: postsWithVoteStatus,
-      });
-    } catch (error) {
-      res.status(500).json({ message: getErrorMessage(error) });
+communityRoutes.delete(
+  "/:name",
+  expressjwt({ secret: secret, algorithms: ["HS256"] }),
+  async (req: Request<AuthUser>, res) => {
+    if (req.auth?.isAdmin) {
+      Community.deleteOne({ name: req.params.name });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(401);
     }
   }
 );
@@ -81,6 +56,7 @@ communityRoutes.get(
 // Add a post to a community
 communityRoutes.post(
   "/:communityName/posts",
+  expressjwt({ secret: secret, algorithms: ["HS256"] }),
   async (req: Request<AuthUser>, res) => {
     const { title, content } = req.body;
 
@@ -89,8 +65,6 @@ communityRoutes.post(
         message: "Missing one or more required fields: title, content",
       });
     }
-
-    console.log(req.params.communityName);
 
     try {
       const community = await Community.findOne({

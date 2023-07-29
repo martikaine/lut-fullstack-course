@@ -4,9 +4,9 @@ import { Post } from '../community.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { VoteArrowsComponent } from '../vote-arrows/vote-arrows.component';
 
-export interface VoteEvent {
+export interface PostVoteEvent {
   id: string;
-  vote: 'up' | 'down';
+  direction: 'up' | 'down';
 }
 
 @Component({
@@ -15,17 +15,16 @@ export interface VoteEvent {
   template: `
     <div class="card mb-2 cursor-pointer" (click)="handleClick()">
       <div class="card-body">
-        <div class="row">
-          <div class="col-1">
+        <div class="d-flex">
+          <div class="">
             <app-vote-arrows
               [state]="post.voteStatus"
               [votes]="post.votes"
               (voteEvent)="passVoteToParent($event)"
               (click)="$event.stopPropagation()"
-              class="float-start"
             ></app-vote-arrows>
           </div>
-          <div class="col float-start">
+          <div class="flex-grow-1">
             <a
               [routerLink]="['post', post._id]"
               class="link-underline link-underline-opacity-0 link-dark"
@@ -56,18 +55,17 @@ export interface VoteEvent {
 })
 export class PostComponent {
   @Input() post!: Post;
-  @Output() voteEvent = new EventEmitter<VoteEvent>();
+  @Output() voteEvent = new EventEmitter<PostVoteEvent>();
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   handleClick() {
-    console.log('click');
     this.router.navigate(['post', this.post._id], {
       relativeTo: this.route,
     });
   }
 
   passVoteToParent(vote: 'up' | 'down') {
-    this.voteEvent.emit({ id: this.post._id, vote });
+    this.voteEvent.emit({ id: this.post._id, direction: vote });
   }
 }

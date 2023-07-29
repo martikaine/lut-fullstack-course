@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { Router, RouterModule } from '@angular/router';
 import { AppToastService, ToastType } from '../app-toast.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-loginpage',
@@ -50,8 +51,15 @@ export class LoginpageComponent {
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private toastService: AppToastService
+    private toastService: AppToastService,
+    private jwtHelper: JwtHelperService
   ) {}
+
+  ngOnInit() {
+    if (!this.jwtHelper.isTokenExpired()) {
+      this.router.navigate(['/community/test']);
+    }
+  }
 
   login() {
     this.loginService

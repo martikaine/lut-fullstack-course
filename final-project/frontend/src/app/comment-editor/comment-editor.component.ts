@@ -21,7 +21,13 @@ import { ActivatedRoute } from '@angular/router';
       <div class="row mb-3">
         <div class="col">
           <button type="submit" class="btn btn-primary">Submit</button>
-          <button class="btn btn-link">Cancel</button>
+          <button
+            *ngIf="showCancelButton"
+            class="btn btn-link"
+            (click)="onCancel.emit()"
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </form>
@@ -30,7 +36,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CommentEditorComponent {
   @Input() parentCommentId!: string | null;
+  @Input() showCancelButton!: boolean;
   @Output() onCommentAdded = new EventEmitter<string | null>();
+  @Output() onCancel = new EventEmitter<void>();
   commentForm = this.formBuilder.group({
     content: [''],
   });

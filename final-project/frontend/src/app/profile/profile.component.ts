@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
     <div class="container-lg">
       <div *ngIf="user">
         <h2>{{ user.username }}</h2>
+        <p>This is a profile page.</p>
       </div>
     </div>
   `,

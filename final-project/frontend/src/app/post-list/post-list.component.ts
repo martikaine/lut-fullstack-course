@@ -4,7 +4,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CommunitySidebarComponent } from '../community-sidebar/community-sidebar.component';
 import { CommunityService, PostsResponse } from '../community.service';
-import { PostComponent, VoteEvent } from '../post/post.component';
+import { PostComponent, PostVoteEvent } from '../post/post.component';
 
 @Component({
   selector: 'app-post-list',
@@ -54,8 +54,8 @@ export class PostListComponent {
     });
   }
 
-  handleVote(event: VoteEvent) {
-    this.communityService.votePost(event.id, event.vote).subscribe({
+  handleVote(event: PostVoteEvent) {
+    this.communityService.votePost(event.id, event.direction).subscribe({
       complete: () => this.updateVotesForPost(event.id),
     });
   }

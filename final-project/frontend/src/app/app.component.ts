@@ -14,11 +14,24 @@ import { AppToastService, ToastType } from './app-toast.service';
   template: `
     <main>
       <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
-      <nav class="navbar navbar-expand-lg">
+      <nav
+        class="navbar navbar-expand-lg bg-dark border-bottom border-body"
+        data-bs-theme="dark"
+      >
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Blurp</a>
           <div class="collapse navbar-collapse">
             <div class="navbar-nav ms-auto">
+              <a
+                *ngIf="!jwtHelper.isTokenExpired()"
+                class="nav-link"
+                [routerLink]="[
+                  '/user',
+                  loginService.getLoggedInUser()?.username
+                ]"
+              >
+                Profile ({{ loginService.getLoggedInUser()?.username }})
+              </a>
               <a
                 *ngIf="jwtHelper.isTokenExpired()"
                 class="nav-link"
@@ -38,7 +51,7 @@ import { AppToastService, ToastType } from './app-toast.service';
           </div>
         </div>
       </nav>
-      <section class="container-fluid mt-2">
+      <section class="container-fluid mt-3">
         <router-outlet></router-outlet>
       </section>
     </main>
@@ -50,7 +63,7 @@ export class AppComponent {
 
   constructor(
     public jwtHelper: JwtHelperService,
-    private loginService: LoginService,
+    public loginService: LoginService,
     private router: Router,
     private toastService: AppToastService
   ) {}

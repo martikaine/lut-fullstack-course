@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="row text-center">
+    <div class="d-flex flex-column text-center me-3">
       <a class="cursor-pointer" (click)="upvote()">
         <i
           *ngIf="state === 'up'"

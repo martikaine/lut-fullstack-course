@@ -14,7 +14,7 @@ import { AppToastService, ToastType } from '../app-toast.service';
       <div class="col-2">
         <app-community-sidebar />
       </div>
-      <div class="col">
+      <div class="col mx-2">
         <router-outlet />
       </div>
       <div class="col-2" *ngIf="community">

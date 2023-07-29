@@ -23,7 +23,6 @@ export class AppToastService {
 
   show(message: string, type: ToastType, delay: number = 5000) {
     this.toasts.push({ text: message, className: type, delay });
-    console.log(this.toasts);
   }
 
   remove(toast: ToastInfo) {

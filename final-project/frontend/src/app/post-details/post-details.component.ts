@@ -4,7 +4,7 @@ import { CommunityService, Post, Comment } from '../community.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { VoteArrowsComponent } from '../vote-arrows/vote-arrows.component';
 import { CommentEditorComponent } from '../comment-editor/comment-editor.component';
-import { PostComponent } from '../post/post.component';
+import { PostComponent, PostVoteEvent } from '../post/post.component';
 import {
   CommentComponent,
   CommentVoteEvent,
@@ -14,8 +14,8 @@ import {
   selector: 'app-post-details',
   standalone: true,
   template: `
-    <app-post *ngIf="post" [post]="post"></app-post>
-    <app-comment-editor></app-comment-editor>
+    <app-post *ngIf="post" [post]="post" (voteEvent)="handleVotePost($event)" />
+    <app-comment-editor (onCommentAdded)="fetchComments()" />
     <app-comment
       *ngFor="let comment of comments"
       [comment]="comment"
@@ -66,10 +66,22 @@ export class PostDetailsComponent implements OnInit {
     });
   }
 
+  fetchPost() {
+    this.communityService.getPost(this.postId).subscribe({
+      next: (post) => (this.post = post),
+    });
+  }
+
   fetchComments() {
     this.communityService.getComments(this.postId).subscribe({
       next: (comments) => (this.comments = comments),
     });
+  }
+
+  handleVotePost(event: PostVoteEvent) {
+    this.communityService
+      .votePost(this.post!._id, event.direction)
+      .subscribe({ complete: () => this.fetchPost() });
   }
 
   handleVoteComment(event: CommentVoteEvent) {

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'api/';
 
 export interface Community {
   _id: string;
@@ -57,15 +57,15 @@ export class CommunityService {
   constructor(private http: HttpClient) {}
 
   getAllCommunities(): Observable<Community[]> {
-    return this.http.get<Community[]>(`${API_URL}/communities`);
+    return this.http.get<Community[]>(`${API_URL}communities`);
   }
 
   getCommunity(communityName: string): Observable<Community> {
-    return this.http.get<Community>(`${API_URL}/communities/${communityName}`);
+    return this.http.get<Community>(`${API_URL}communities/${communityName}`);
   }
 
   addCommunity(name: string, description: string) {
-    return this.http.post(`${API_URL}/communities`, { name, description });
+    return this.http.post(`${API_URL}communities`, { name, description });
   }
 
   getAllPosts(
@@ -76,10 +76,7 @@ export class CommunityService {
       .set('page', String(page))
       .set('communityName', communityName);
 
-    return this.http.get<PostsResponse>(
-      `${API_URL}/communities/${communityName}/posts`,
-      { params }
-    );
+    return this.http.get<PostsResponse>(`${API_URL}posts`, { params });
   }
 
   addPost(
@@ -89,17 +86,17 @@ export class CommunityService {
   ): Observable<Post> {
     const body = { title, content };
     return this.http.post<Post>(
-      `${API_URL}/communities/${communityName}/posts`,
+      `${API_URL}communities/${communityName}/posts`,
       body
     );
   }
 
   getPost(id: string): Observable<Post> {
-    return this.http.get<Post>(`${API_URL}/posts/${id}`);
+    return this.http.get<Post>(`${API_URL}posts/${id}`);
   }
 
   votePost(postId: string, type: 'up' | 'down') {
-    return this.http.post<Post>(`${API_URL}/posts/${postId}/vote`, { type });
+    return this.http.post<Post>(`${API_URL}posts/${postId}/vote`, { type });
   }
 
   addComment(
@@ -107,19 +104,19 @@ export class CommunityService {
     parentCommentId: string | null,
     content: string
   ): Observable<Comment> {
-    return this.http.post<Comment>(`${API_URL}/posts/${postId}/comments`, {
+    return this.http.post<Comment>(`${API_URL}posts/${postId}/comments`, {
       parentCommentId,
       content,
     });
   }
 
   getComments(postId: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${API_URL}/posts/${postId}/comments`);
+    return this.http.get<Comment[]>(`${API_URL}posts/${postId}/comments`);
   }
 
   voteComment(postId: string, commentId: string, type: 'up' | 'down') {
     return this.http.post(
-      `${API_URL}/posts/${postId}/comment/${commentId}/vote`,
+      `${API_URL}posts/${postId}/comment/${commentId}/vote`,
       {
         type,
       }

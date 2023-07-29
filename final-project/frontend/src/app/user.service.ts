@@ -1,8 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
-const API_URL = 'http://localhost:3001';
 
 export interface User {
   username: string;
@@ -19,6 +16,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getProfile(name: string) {
-    return this.http.get<User>(`${API_URL}/users/${name}`);
+    return this.http.get<User>(`api/users/${name}`);
   }
 }

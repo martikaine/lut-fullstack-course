@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { PostListComponent } from './post-list/post-list.component';
+import { authGuard } from './auth.guard';
 
 const routeConfig: Routes = [
   {
@@ -19,7 +20,6 @@ const routeConfig: Routes = [
     path: 'login',
     component: LoginpageComponent,
     title: 'Login page',
-    data: { animation: 'enterLeavePage' },
   },
   {
     path: 'register',
@@ -28,6 +28,7 @@ const routeConfig: Routes = [
   {
     path: 'community/:name',
     component: CommunityComponent,
+    canActivate: [authGuard],
     title: 'Community',
     children: [
       { path: '', component: PostListComponent },
@@ -43,6 +44,7 @@ const routeConfig: Routes = [
   },
   {
     path: 'new-community',
+    canActivate: [authGuard],
     component: NewCommunityComponent,
   },
   {

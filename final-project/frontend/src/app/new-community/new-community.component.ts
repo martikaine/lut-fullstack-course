@@ -4,44 +4,51 @@ import { CommunityService } from '../community.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppToastService, ToastType } from '../app-toast.service';
+import { CommunitySidebarComponent } from '../community-sidebar/community-sidebar.component';
 
 @Component({
   selector: 'app-new-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="container-lg">
-      <form (ngSubmit)="onSubmit()" [formGroup]="postForm">
-        <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            formControlName="name"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea
-            class="form-control"
-            id="description"
-            formControlName="description"
-            required
-          ></textarea>
-        </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="postForm.invalid"
-        >
-          Submit
-        </button>
-      </form>
+    <div class="row">
+      <div class="col-2">
+        <app-community-sidebar />
+      </div>
+      <div class="col">
+        <form (ngSubmit)="onSubmit()" [formGroup]="postForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="postForm.invalid"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div class="col-2"></div>
     </div>
   `,
   styleUrls: ['./new-community.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule, CommunitySidebarComponent],
 })
 export class NewCommunityComponent implements OnInit {
   communityName: string = '';

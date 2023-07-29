@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-community-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: `<aside class="bd-sidebar">
+  template: `<aside class="bd-sidebar overflow-auto">
     <div class="d-grid">
       <button
         [routerLink]="['/new-community']"
@@ -29,7 +29,12 @@ import { RouterModule } from '@angular/router';
           <h5 class="card-title">
             {{ community.name }}
           </h5>
-          <p class="card-text">{{ community.description }}</p>
+          <p
+            class="card-text"
+            style="max-height: 150px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            {{ community.description }}
+          </p>
         </div>
       </div></a
     >

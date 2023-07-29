@@ -26,7 +26,7 @@ bootstrapApplication(AppComponent, {
       JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
-          allowedDomains: ['localhost:3001'],
+          allowedDomains: ['localhost:4200', 'localhost:3000'],
           disallowedRoutes: [''],
         },
       })
