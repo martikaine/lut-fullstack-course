@@ -2,11 +2,11 @@
 
 ## 1. NodeJS basics
 
-- on laptop
+This tutorial was mostly just a refresher for me, as I was already quite familiar with NodeJS. Making a simple web server with vanilla Node was a fun way to apply those things, though - I had always just went straight for Express for that. The project managed to incorporate quite a few of the builtin Node features in a practical manner.
 
 ## 2. ExpressJS basics
 
-Short and sweet. I had used ExpressJS before, so this was mostly things I already knew about. I had also used Handlebars, but using Express as the template engine was new to me. Good to know that there's a plugin for it.
+Short and sweet. I had used ExpressJS before, so these were also mostly things I already knew about. I had also used Handlebars, but using Express as the template engine was new to me. Good to know that there's a plugin for it.
 
 ## 3. MongoDB basics
 
@@ -14,7 +14,7 @@ Prior to starting the tutorial I was vaguely aware of how NoSQL databases work, 
 
 ## 4. Angular basics
 
-I completed the "first app tutorial" in its entirety and skimmed through the rest. It took me a while to figure out that I was expected to download the base project rather than create my own, but after getting past that hurdle the tutorial was rather straightforward. There was quite a lot of "copy and paste this code" involved in the tutorial, which I understand for the sake of getting impressive-looking results quickly, but it was easy to just autopilot and miss the point of what the copied code actually does. Still, I found that the tutorial covered the basic features of Angular quite nicely.
+I completed the angular.io "first app tutorial" in its entirety and skimmed through the other tutorials. It took me a while to figure out that I was expected to download the base project rather than create my own, but after getting past that hurdle the tutorial was rather straightforward. There was quite a lot of "copy and paste this code" involved in the tutorial, which I understand for the sake of getting impressive-looking results quickly, but it was easy to just autopilot and miss the point of what the copied code actually does. Still, I found that the tutorial covered the basic features of Angular quite nicely and the end result definitely looked great for such a short tutorial.
 
 I find the Angular approach of and letting a CLI tool generate most project files interesting. I can definitely see upsides in ensuring consistency across larger dev teams, or even across different codebases. It can also be convenient for larger projects that things like dependency injection, a router, and a testing framework are already set up out of the box. However, on the flipside the amount of things included in the "simplest possible" Angular application seems quite overkill for smaller projects.
 
@@ -32,4 +32,4 @@ I created the UI side using the learnings from the more up-to-date Angular tutor
 
 As a React user I have to admit Angular felt quite cumbersome to work with at first. The learning curve seems very steep - at the start, there are a lot of concepts thrown at you at once and many of them are very Angular-specific. (I still don't quite understand the point of the RxJs `.subscribe()` model when the language has `async`/`await` out of the box.) However, little by little I was able to get the application up and running, and challenging my usual habits of doing things was a positive thing overall. At first I tried to do data binding "the React way" out of habit, with data only flowing from top down, but I had to constantly `.bind()` event handler functions to fix scoping issues work which felt quite hacky. After changing to the two-way data binding model things became a lot clearer.
 
-Unfortunately, Heroku no longer offers a free tier for hosting applications. Adding an application required entering credit card information, which I didn't want to do, so I wasn't able to publish the application. Hopefully being able to run it in localhost is enough. The instructions are in README.md.
+Unfortunately, Heroku no longer offers a free tier for hosting applications. Adding an application required entering credit card information, which I didn't want to do, so I wasn't able to publish it. Hopefully being able to run it in localhost is enough. The instructions for that are in `final_project/README.md`.
